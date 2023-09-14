@@ -1,0 +1,88 @@
+namespace: debts-management
+debts-management:
+  defines: runnable
+  metadata:
+    name: debts-management
+    description: A server application for managing debts.
+    icon: https://emojiapi.dev/api/v1/robot.svg
+  containers:
+    debts-management:
+      build: .
+  services:
+    main:
+      container: debts-management
+      port: 8000
+      host-port: 8000
+      publish: false
+      protocol: TCP
+      description: Main application port
+  connections:
+    database:
+      target: postgresql/db
+      service: postgres
+  variables:
+    access-token-life-time:
+      env: ACCESS_TOKEN_LIFE_TIME
+      type: int
+      description: Access token lifetime in seconds
+      value: '31536000'
+    database-url:
+      env: DATABASE_URL
+      type: string
+      description: Database connection string
+      value: <- connection-hostname("database")
+    database-logging-enabled:
+      env: DATABASE_LOGGING_ENABLED
+      type: string
+      description: Enables database logging
+      value: 'false'
+    database-pool-recycle:
+      env: DATABASE_POOL_RECYCLE
+      type: int
+      description: Database connection pool recycle time
+      value: '600'
+    database-pool-size:
+      env: DATABASE_POOL_SIZE
+      type: int
+      description: Database connection pool size
+      value: '5'
+    logging-format:
+      env: LOGGING_FORMAT
+      type: string
+      description: Format for logging
+      value: '''%(asctime)s %(levelname)s %(name)s %(message)s %(context)s'''
+    logging-level:
+      env: LOGGING_LEVEL
+      type: string
+      description: Logging level
+      value: INFO
+    secret-key:
+      env: SECRET_KEY
+      type: string
+      description: Secret key for security
+      value: '!!!SETME!!!'
+    sentry-dsn:
+      env: SENTRY_DSN
+      type: string
+      description: Sentry DSN for error tracking
+      value: '!!!SETME!!!'
+    thread-pool-size:
+      env: THREAD_POOL_SIZE
+      type: int
+      description: Size of thread pool
+      value: '10'
+    build-dev:
+      env: BUILD_DEV
+      type: string
+      description: Indicate if the build is development or not
+      value: '!!!SETME!!!'
+    worker-max-requests:
+      env: WORKER_MAX_REQUESTS
+      type: int
+      description: Maximum number of worker requests
+      value: '50000'
+    worker-limit-concurrency:
+      env: WORKER_LIMIT_CONCURRENCY
+      type: int
+      description: Limit of worker concurrency
+      value: '1000'
